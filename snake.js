@@ -48,12 +48,14 @@ function Food (Pos) {
 
 
 function drawFood() {
+  ctx.fillStyle = "#fdd835";
   ctx.fillRect(food.x, food.y, 7, 7);
   ctx.fill();
 };
 
 
 function drawSnake () {
+    ctx.fillStyle = "#e53935";
   for (var i = 0; i <= posArr.length - 1; i++) {
     ctx.fillRect(posArr[i].x, posArr[i].y, 13, 13);
     ctx.fill();
@@ -88,6 +90,7 @@ function snakeCol() {
 
 
 function gameOver () {
+  ctx.fillStyle = "#FFFFFF";
   ctx.font = "100px Sans";
   ctx.fillText("Game Over", 10, 300);
 }
@@ -97,11 +100,14 @@ Food.prototype.eaten = function() {
   if (posArr[posArr.length - 1].x - 13 <= this.x && posArr[posArr.length - 1].x + 13 >= this.x &&
       posArr[posArr.length - 1].y - 13 <= this.y && posArr[posArr.length - 1].y + 13 >= this.y) {
 
-    this.x = Math.floor(Math.random() * canvas.width - 30);
-    this.y = Math.floor(Math.random() * canvas.height - 30);
+    this.x = Math.floor(Math.random() * canvas.width);
+    this.y = Math.floor(Math.random() * canvas.height);
 
-    if (this.x < 0) {this.x *= -1}
-    if (this.y < 0) {this.y *= -1}
+    if (this.x < 20) {this.x += 20}
+    if (this.y < 20) {this.y += 20}
+
+    if (this.x > canvas.width - 20) {this.x -= 20}
+    if (this.y > canvas.height - 20) {this.y -= 20}
     snakeAdd();
   }
 }

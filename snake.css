@@ -1,0 +1,8 @@
+ body {
+  text-align: center;
+  background-color:  #1e88e5;
+ }
+
+#canvas {
+      border: 3px solid white;
+    }
