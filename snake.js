@@ -12,34 +12,69 @@
 
 var canvas = document.getElementById('canvas');
 var ctx = canvas.getContext('2d');
+var scoreHtml = document.getElementById('score');
+var restartHTML = document.getElementById('restart');
 
 
 var lastKey = [];
 document.addEventListener("keydown", function(event) {
   lastKey.push(event.keyCode);
+
+  while (lastKey.length > 3) {
+    lastKey.shift();
+  }
 }, true);
+
+restartHTML.addEventListener("click", function() {
+
+  score = 0;
+  scoreHtml.innerHTML = 'Score: 0';
+
+  fel = true;
+  le = false;
+  jobb = false;
+  bal = false;
+  lastKey.push(87);
+
+  posArr = [];
+  food = new Food(new Pos(250, 100));
+
+  posArr.push(new Pos(250, 350));
+  posArr.push(new Pos(250, 355));
+  posArr.push(new Pos(250, 360));
+  posArr.push(new Pos(250, 365));
+  posArr.push(new Pos(250, 370));
+  posArr.push(new Pos(250, 375));
+  posArr.push(new Pos(250, 380));
+  posArr.push(new Pos(250, 385));
+  posArr.push(new Pos(250, 390));
+  posArr.reverse();
+
+  snakeLen = posArr.length;
+}, 0);
 
 
 canvas.width = 600;
 canvas.height = 600;
 
-var x = 250;
-var y = 250;
+
 var speed = 5;
+var score = 0;
+
 var fel = true;
 var le = false;
 var jobb = false;
 var bal = false;
+
 var posArr = [];
 var food = new Food(new Pos(250, 100));
 
 
-
+//costructors
 function Pos (x, y) {
   this.x = x;
   this.y = y;
 };
-
 
 function Food (Pos) {
   this.x = Pos.x;
@@ -47,28 +82,32 @@ function Food (Pos) {
 };
 
 
+
+//drawing functions
 function drawFood() {
   ctx.fillStyle = "#fdd835";
   ctx.fillRect(food.x, food.y, 7, 7);
   ctx.fill();
 };
 
-
 function drawSnake () {
     ctx.fillStyle = "#e53935";
   for (var i = 0; i <= posArr.length - 1; i++) {
     ctx.fillRect(posArr[i].x, posArr[i].y, 13, 13);
     ctx.fill();
-  };
+  }
 };
 
+
+
+//sanke functions
 function snakeAdd () {
   posArr.push(new Pos(posArr[posArr.length - 1].x, posArr[posArr.length - 1].y + 0.01));
   posArr.push(new Pos(posArr[posArr.length - 1].x, posArr[posArr.length - 1].y + 0.02));
   posArr.push(new Pos(posArr[posArr.length - 1].x, posArr[posArr.length - 1].y + 0.03));
   
   snakeLen += 3;
-}
+};
 
 function snakeCol() {
   if (posArr[posArr.length - 1].x >= canvas.width || posArr[posArr.length - 1].x <=0) {
@@ -84,17 +123,17 @@ function snakeCol() {
         posArr[0].y == posArr[i].y) {
       return true;
     }
-  };
-}
+  }
+};
 
 
 
+//utility functions
 function gameOver () {
   ctx.fillStyle = "#FFFFFF";
-  ctx.font = "100px Sans";
-  ctx.fillText("Game Over", 10, 300);
-}
-
+  ctx.font = "100px Roboto";
+  ctx.fillText("Game Over", 40, 300);
+};
 
 Food.prototype.eaten = function() {
   if (posArr[posArr.length - 1].x - 13 <= this.x && posArr[posArr.length - 1].x + 13 >= this.x &&
@@ -108,19 +147,22 @@ Food.prototype.eaten = function() {
 
     if (this.x > canvas.width - 20) {this.x -= 20}
     if (this.y > canvas.height - 20) {this.y -= 20}
+
+    score++;
+  scoreHtml.innerHTML = 'Score: ' + score;
     snakeAdd();
   }
-}
+};
 
-posArr.push(new Pos(250, 250));
-posArr.push(new Pos(250, 255));
-posArr.push(new Pos(250, 260));
-posArr.push(new Pos(250, 265));
-posArr.push(new Pos(250, 270));
-posArr.push(new Pos(250, 275));
-posArr.push(new Pos(250, 280));
-posArr.push(new Pos(250, 285));
-posArr.push(new Pos(250, 290));
+posArr.push(new Pos(250, 350));
+posArr.push(new Pos(250, 355));
+posArr.push(new Pos(250, 360));
+posArr.push(new Pos(250, 365));
+posArr.push(new Pos(250, 370));
+posArr.push(new Pos(250, 375));
+posArr.push(new Pos(250, 380));
+posArr.push(new Pos(250, 385));
+posArr.push(new Pos(250, 390));
 posArr.reverse();
 
 var snakeLen = posArr.length;
@@ -189,8 +231,8 @@ var snakeLen = posArr.length;
     }
 
     food.eaten();
-    drawFood();
     drawSnake();
+    drawFood();
 
   }
 }());
